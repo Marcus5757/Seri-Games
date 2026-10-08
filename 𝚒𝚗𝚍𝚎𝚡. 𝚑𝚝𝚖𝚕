@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seri's Digital Circus 🎪</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Orbitron:wght@500;700;900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Baloo 2", sans-serif;
+    background:
+        radial-gradient(circle at top, #3b145f, #12051f 55%, #05020a);
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+button {
+    font-family: inherit;
+}
+
+.screen {
+    display: none;
+    min-height: 100vh;
+    padding: 30px 20px;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* INTRO */
+
+#intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.intro-box {
+    max-width: 850px;
+    z-index: 5;
+    animation: float 3s ease-in-out infinite;
+}
+
+.logo {
+    font-family: Orbitron, sans-serif;
+    font-size: clamp(35px, 8vw, 80px);
+    font-weight: 900;
+    color: #ffdc5e;
+    text-shadow:
+        0 0 10px #ffdc5e,
+        0 0 30px #ff66d9,
+        5px 5px 0 #7d35a8;
+}
+
+.subtitle {
+    font-size: clamp(18px, 4vw, 28px);
+    margin: 15px 0 30px;
+    color: #f7d7ff;
+}
+
+.enter-btn,
+.big-btn {
+    border: none;
+    padding: 16px 30px;
+    border-radius: 999px;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    color: #24102e;
+    background: linear-gradient(135deg, #ffe36e, #ff8de1);
+    box-shadow: 0 8px 0 #7c2b83, 0 0 30px #ff72dc;
+    transition: .2s;
+}
+
+.enter-btn:hover,
+.big-btn:hover {
+    transform: translateY(-4px) scale(1.04);
+}
+
+.enter-btn:active,
+.big-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 3px 0 #7c2b83;
+}
+
+.floating {
+    position: absolute;
+    font-size: 40px;
+    animation: floatAround 7s linear infinite;
+    opacity: .8;
+}
+
+.f1 { left: 8%; top: 20%; }
+.f2 { right: 10%; top: 25%; animation-delay: 1s; }
+.f3 { left: 18%; bottom: 15%; animation-delay: 2s; }
+.f4 { right: 20%; bottom: 12%; animation-delay: 3s; }
+
+/* GALLERY */
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-family: Orbitron, sans-serif;
+    color: #ffdf67;
+    font-size: clamp(28px, 6vw, 55px);
+}
+
+.header p {
+    color: #e5c9f1;
+    font-size: 18px;
+}
+
+.collection {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    min-height: 220px;
+    padding: 25px;
+    border-radius: 25px;
+    border: 2px solid rgba(255,255,255,.15);
+    background: rgba(255,255,255,.08);
+    backdrop-filter: blur(12px);
+    transition: .25s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-8px) rotate(-1deg);
+    border-color: #ffdc5e;
+    box-shadow: 0 15px 40px rgba(255,100,220,.25);
+}
+
+.card-icon {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    color: #ffe16b;
+    margin-bottom: 5px;
+}
+
+.card p {
+    color: #ead9ef;
+    line-height: 1.5;
+}
+
+.dandy {
+    background: linear-gradient(145deg, #285c42, #11271d);
+}
+
+.fnaf {
+    background: linear-gradient(145deg, #34394a, #10121a);
+}
+
+.transformers {
+    background: linear-gradient(145deg, #315b83, #101c2c);
+}
+
+.tadc {
+    background: linear-gradient(145deg, #762b7e, #251032);
+}
+
+.waffle {
+    background: linear-gradient(145deg, #70401d, #2b1508);
+}
+
+.robot {
+    background: linear-gradient(145deg, #5e274e, #20101e);
+}
+
+/* GAME */
+
+#game {
+    text-align: center;
+}
+
+.game-wrap {
+    max-width: 900px;
+    margin: auto;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin: 15px 0;
+}
+
+.stat {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-weight: 800;
+}
+
+#gameArea {
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 30px;
+    border: 4px solid #ffdc5e;
+    background:
+        linear-gradient(rgba(20,5,30,.4), rgba(20,5,30,.8)),
+        repeating-linear-gradient(
+            90deg,
+            #3a164d 0px,
+            #3a164d 50px,
+            #511d65 50px,
+            #511d65 100px
+        );
+    box-shadow:
+        0 0 35px rgba(255,75,220,.35),
+        inset 0 0 80px rgba(0,0,0,.5);
+}
+
+#player {
+    position: absolute;
+    width: 58px;
+    height: 58px;
+    left: 50%;
+    bottom: 25px;
+    transform: translateX(-50%);
+    font-size: 45px;
+    z-index: 10;
+    filter: drop-shadow(0 0 10px #ffdc5e);
+}
+
+.star {
+    position: absolute;
+    font-size: 34px;
+    z-index: 8;
+    animation: spin 1.2s linear infinite;
+}
+
+.obstacle {
+    position: absolute;
+    font-size: 40px;
+    z-index: 7;
+}
+
+.instructions {
+    margin: 15px auto;
+    max-width: 700px;
+    color: #e8d4ee;
+}
+
+.touch-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.touch-controls button {
+    width: 90px;
+    height: 60px;
+    border: none;
+    border-radius: 20px;
+    background: #ff8ee4;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* WIN */
+
+#win {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.win-box {
+    max-width: 650px;
+    margin: auto;
+    padding-top: 15vh;
+}
+
+.win-box h1 {
+    font-family: Orbitron, sans-serif;
+    font-size: clamp(35px, 8vw, 70px);
+    color: #ffe26d;
+    text-shadow: 0 0 30px #ff7bdc;
+}
+
+.gift {
+    font-size: 130px;
+    cursor: pointer;
+    display: inline-block;
+    margin: 30px;
+    animation:
+        giftBounce 1s ease-in-out infinite,
+        glow 2s ease-in-out infinite;
+}
+
+.gift:hover {
+    transform: scale(1.15);
+}
+
+/* LETTER */
+
+#letter {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.letter-box {
+    max-width: 700px;
+    margin: 8vh auto;
+    padding: 45px 30px;
+    border-radius: 30px;
+    background:
+        linear-gradient(145deg, #fff4c9, #ffd9ef);
+    color: #351532;
+    box-shadow: 0 20px 70px rgba(255,100,220,.35);
+    animation: letterOpen .8s ease;
+}
+
+.letter-box h1 {
+    font-family: Orbitron, sans-serif;
+    color: #8c237d;
+    font-size: clamp(28px, 6vw, 48px);
+    margin-bottom: 20px;
+}
+
+.letter-box p {
+    font-size: 21px;
+    line-height: 1.7;
+    margin: 10px 0;
+}
+
+.signature {
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.back {
+    margin-top: 25px;
+    background: #8c237d;
+    color: white;
+    box-shadow: none;
+}
+
+/* CONFETTI */
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 18px;
+    top: -30px;
+    z-index: 999;
+    animation: confettiFall 3s linear forwards;
+}
+
+/* ANIMATIONS */
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+@keyframes floatAround {
+    0% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-35px) rotate(180deg); }
+    100% { transform: translateY(0) rotate(360deg); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg) scale(1.1); }
+}
+
+@keyframes giftBounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+    0%,100% { filter: drop-shadow(0 0 10px #ff75df); }
+    50% { filter: drop-shadow(0 0 40px #ffe26d); }
+}
+
+@keyframes letterOpen {
+    from {
+        opacity: 0;
+        transform: scale(.7) rotate(-4deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@media(max-width:600px) {
+    #gameArea {
+        height: 430px;
+    }
+
+    .card {
+        min-height: 190px;
+    }
+
+    .letter-box {
+        padding: 30px 20px;
+    }
+
+    .letter-box p {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+
+<section id="intro" class="screen active">
+
+    <div class="floating f1">🎪</div>
+    <div class="floating f2">🎭</div>
+    <div class="floating f3">⭐</div>
+    <div class="floating f4">🎁</div>
+
+    <div class="intro-box">
+
+        <div style="font-size:70px;">🎪</div>
+
+        <h1 class="logo">SERI'S<br>DIGITAL CIRCUS</h1>
+
+        <p class="subtitle">
+            A tiny birthday adventure made just for you.
+        </p>
+
+        <!-- FIXED BUTTON -->
+        <button class="enter-btn" onclick="show('gallery')">
+            ENTER THE CIRCUS 🎟️
+        </button>
+
+    </div>
+</section>
+
+
+<!-- COLLECTION -->
+
+<section id="gallery" class="screen">
+
+    <div class="header">
+        <h1>THE SERI COLLECTION</h1>
+        <p>A little collection of things you like 🎭✨</p>
+    </div>
+
+    <div class="collection">
+
+        <div class="card dandy">
+            <div class="card-icon">🌼</div>
+            <h2>DANDY'S WORLD</h2>
+            <p>
+                A colorful little corner inspired by the weird,
+                chaotic and fun world of Dandy's World.
+            </p>
+        </div>
+
+        <div class="card fnaf">
+            <div class="card-icon">🐻</div>
+            <h2>FNAF</h2>
+            <p>
+                Lights off. Camera on.
+                Something might be watching from the hallway... 👀
+            </p>
+        </div>
+
+        <div class="card transformers">
+            <div class="card-icon">🤖</div>
+            <h2>TRANSFORMERS</h2>
+            <p>
+                Robots, transformations and giant mechanical chaos.
+                AUTOBOTS... ROLL OUT!
+            </p>
+        </div>
+
+        <div class="card robot">
+            <div class="card-icon">⚙️</div>
+            <h2>ANIMATED ROBOTS</h2>
+            <p>
+                A little tribute to all the cool animated robot
+                characters and giant machines.
+            </p>
+        </div>
+
+        <div class="card tadc">
+            <div class="card-icon">🎭</div>
+            <h2>DIGITAL CIRCUS</h2>
+            <p>
+                Welcome to the digital circus.
+                Nothing here is completely normal.
+            </p>
+        </div>
+
+        <div class="card waffle">
+            <div class="card-icon">🧇</div>
+            <h2>WAFFLES</h2>
+            <p>
+                And obviously...
+                waffles with chocolate syrup. 🍫🧇
+            </p>
+        </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:35px;">
+        <button class="big-btn" onclick="startGame()">
+            🎮 PLAY THE CIRCUS GAME
+        </button>
+    </div>
+
+</section>
+
+
+<!-- GAME -->
+
+<section id="game" class="screen">
+
+    <div class="game-wrap">
+
+        <div class="header">
+            <h1>CIRCUS CHAOS 🎪</h1>
+            <p>Collect 10 stars before the timer reaches zero!</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                ⭐ Stars:
+                <span id="score">0</span>/10
+            </div>
+
+            <div class="stat">
+                ⏱️ Time:
+                <span id="time">30</span>
+            </div>
+        </div>
+
+        <div id="gameArea">
+
+            <div id="player">🎭</div>
+
+        </div>
+
+        <p class="instructions">
+            Move with <b>← →</b> or <b>A / D</b>.
+            On mobile, use the buttons below.
+            Collect ⭐ and avoid the spooky obstacles! 👾
+        </p>
+
+        <div class="touch-controls">
+            <button onclick="movePlayer(-1)">⬅️</button>
+            <button onclick="movePlayer(1)">➡️</button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- WIN -->
+
+<section id="win" class="screen">
+
+    <div class="win-box">
+
+        <div style="font-size:70px;">🎪✨🎉</div>
+
+        <h1>YOU WON!</h1>
+
+        <p style="font-size:22px;margin-top:15px;">
+            You survived the circus chaos.
+        </p>
+
+        <p style="font-size:20px;color:#e8d4ee;">
+            Something is waiting for you...
+        </p>
+
+        <div
+            class="gift"
+            onclick="openGift()"
+            title="Open the present"
+        >
+            🎁
+        </div>
+
+        <p style="font-size:18px;">
+            ↑ CLICK THE PRESENT ↑
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- LETTER -->
+
+<section id="letter" class="screen">
+
+    <div class="letter-box">
+
+        <div style="font-size:70px;">
+            🎂🎪💜
+        </div>
+
+        <h1>HAPPY BIRTHDAY, SERI!</h1>
+
+        <p>
+            Hope you have an amazing birthday
+            and a really good day.
+        </p>
+
+        <p>
+            May your day be full of fun,
+            good memories, and obviously...
+            🧇 <b>waffles with chocolate.</b> 🍫
+        </p>
+
+        <p>
+            Thanks for being part of my memories
+            and I hope you enjoy this little
+            random website I made.
+        </p>
+
+        <div class="signature">
+            — Marcus
+        </div>
+
+        <button
+            class="big-btn back"
+            onclick="show('intro')"
+        >
+            🎪 BACK TO THE CIRCUS
+        </button>
+
+    </div>
+
+</section>
+
+
+<script>
+
+let currentScreen = "intro";
+
+let score = 0;
+let timeLeft = 30;
+let gameRunning = false;
+
+let playerX = 50;
+
+let gameTimer;
+let objectTimer;
+
+
+/* SCREEN SYSTEM */
+
+function show(id) {
+
+    document.querySelectorAll(".screen")
+        .forEach(screen => {
+            screen.classList.remove("active");
+        });
+
+    const target = document.getElementById(id);
+
+    if (target) {
+        target.classList.add("active");
+        currentScreen = id;
+        window.scrollTo(0,0);
+    }
+}
+
+
+/* START GAME */
+
+function startGame() {
+
+    show("game");
+
+    score = 0;
+    timeLeft = 30;
+    playerX = 50;
+    gameRunning = true;
+
+    document.getElementById("score").textContent = score;
+    document.getElementById("time").textContent = timeLeft;
+
+    const gameArea = document.getElementById("gameArea");
+
+    gameArea.querySelectorAll(".star, .obstacle")
+        .forEach(el => el.remove());
+
+    updatePlayer();
+
+    clearInterval(gameTimer);
+    clearInterval(objectTimer);
+
+    gameTimer = setInterval(() => {
+
+        if (!gameRunning) return;
+
+        timeLeft--;
+
+        document.getElementById("time")
+            .textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            loseGame();
+        }
+
+    },1000);
+
+    objectTimer = setInterval(spawnObjects,650);
+}
+
+
+/* PLAYER */
+
+function updatePlayer() {
+
+    const player = document.getElementById("player");
+
+    player.style.left = playerX + "%";
+}
+
+
+function movePlayer(direction) {
+
+    if (!gameRunning) return;
+
+    playerX += direction * 7;
+
+    if (playerX < 5) playerX = 5;
+    if (playerX > 95) playerX = 95;
+
+    updatePlayer();
+}
+
+
+/* KEYBOARD */
+
+document.addEventListener("keydown", function(e) {
+
+    if (!gameRunning) return;
+
+    if (
+        e.key === "ArrowLeft" ||
+        e.key.toLowerCase() === "a"
+    ) {
+        movePlayer(-1);
+    }
+
+    if (
+        e.key === "ArrowRight" ||
+        e.key.toLowerCase() === "d"
+    ) {
+        movePlayer(1);
+    }
+
+});
+
+
+/* SPAWN */
+
+function spawnObjects() {
+
+    if (!gameRunning) return;
+
+    const gameArea = document.getElementById("gameArea");
+
+    const isStar = Math.random() > 0.35;
+
+    const object = document.createElement("div");
+
+    object.className = isStar ? "star" : "obstacle";
+
+    object.textContent = isStar
+        ? "⭐"
+        : ["👾","🎭","🤡","⚙️"][Math.floor(Math.random()*4)];
+
+    object.style.left =
+        Math.random() * 90 + 5 + "%";
+
+    object.style.top = "-50px";
+
+    gameArea.appendChild(object);
+
+    let y = -50;
+
+    const fallSpeed = isStar ? 3.5 : 4.5;
+
+    const fall = setInterval(() => {
+
+        if (!gameRunning) {
+            clearInterval(fall);
+            object.remove();
+            return;
+        }
+
+        y += fallSpeed;
+
+        object.style.top = y + "px";
+
+        checkCollision(object, isStar, fall);
+
+        if (y > gameArea.clientHeight + 50) {
+            clearInterval(fall);
+            object.remove();
+        }
+
+    },20);
+}
+
+
+/* COLLISION */
+
+function checkCollision(object, isStar, fall) {
+
+    const player = document.getElementById("player");
+
+    const a = object.getBoundingClientRect();
+    const b = player.getBoundingClientRect();
+
+    const collision =
+        a.left < b.right &&
+        a.right > b.left &&
+        a.top < b.bottom &&
+        a.bottom > b.top;
+
+    if (collision) {
+
+        clearInterval(fall);
+        object.remove();
+
+        if (isStar) {
+
+            score++;
+
+            document.getElementById("score")
+                .textContent = score;
+
+            if (score >= 10) {
+                winGame();
+            }
+
+        } else {
+
+            timeLeft -= 3;
+
+            if (timeLeft < 0)
+                timeLeft = 0;
+
+            document.getElementById("time")
+                .textContent = timeLeft;
+        }
+    }
+}
+
+
+/* WIN */
+
+function winGame() {
+
+    gameRunning = false;
+
+    clearInterval(gameTimer);
+    clearInterval(objectTimer);
+
+    show("win");
+
+    createConfetti();
+}
+
+
+/* LOSE */
+
+function loseGame() {
+
+    gameRunning = false;
+
+    clearInterval(gameTimer);
+    clearInterval(objectTimer);
+
+    alert(
+        "The circus got you 😭\n\nTry again!"
+    );
+
+    startGame();
+}
+
+
+/* GIFT */
+
+function openGift() {
+
+    show("letter");
+
+    createConfetti();
+}
+
+
+/* CONFETTI */
+
+function createConfetti() {
+
+    const symbols = [
+        "🎉",
+        "✨",
+        "⭐",
+        "🎊",
+        "💜",
+        "💛",
+        "🎪"
+    ];
+
+    for (let i = 0; i < 60; i++) {
+
+        const confetti =
+            document.createElement("div");
+
+        confetti.className = "confetti";
+
+        confetti.textContent =
+            symbols[
+                Math.floor(Math.random() * symbols.length)
+            ];
+
+        confetti.style.left =
+            Math.random() * 100 + "vw";
+
+        confetti.style.animationDelay =
+            Math.random() * 1.5 + "s";
+
+        confetti.style.fontSize =
+            10 + Math.random() * 18 + "px";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+            confetti.remove();
+        },4000);
+    }
+}
+
+</script>
+
+</body>
+</html>
